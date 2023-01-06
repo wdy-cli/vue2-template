@@ -1,0 +1,54 @@
+
+.flex {
+  display: flex;
+}
+
+.fr {
+  @extend .flex;
+  flex-direction: row;
+}
+
+.f-col {
+  @extend .flex;
+  flex-direction: column;
+}
+
+.f1 {
+  flex: 1;
+}
+
+.fw {
+  @extend .flex;
+  flex-wrap: wrap;
+}
+
+.fnw {
+  @extend .flex;
+  flex-wrap: nowrap;
+}
+
+.fbr {
+  @extend .f-row;
+  justify-content: space-between;
+}
+
+.fbc {
+  @extend .f-col;
+  justify-content: space-between;
+}
+
+.fc {
+  @extend .flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fca {
+  @extend .flex;
+  align-items: center;
+}
+
+.fcj {
+  @extend .flex;
+  justify-content: center;
+}
