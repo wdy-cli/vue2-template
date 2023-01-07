@@ -1,10 +1,9 @@
-export function isEmpty(value) {
-  let type
+export function isEmpty (value) {
   if (value == null || value === undefined || value === 'undefined') {
     // 等同于 value === undefined || value === null
     return true
   }
-  type = Object.prototype.toString.call(value).slice(8, -1)
+  const type = Object.prototype.toString.call(value).slice(8, -1)
   switch (type) {
     case 'String':
       return value.trim() === ''

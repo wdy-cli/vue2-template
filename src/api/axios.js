@@ -1,17 +1,17 @@
-import qs from "qs"; //参数编译
-import axios from "axios";
+import qs from 'qs' // 参数编译
+import axios from 'axios'
 
 import {
   pushPending,
   removePending,
   existInPending,
   createTask,
-  handleTask,
-} from "./utils";
+  handleTask
+} from './utils'
 
-const baseURL = "";
+const baseURL = ''
 
-//请求封装
+// 请求封装
 export const request = (
   method,
   url,
@@ -20,16 +20,16 @@ export const request = (
   preventRepeat = true,
   uploadFile = false
 ) => {
-  let key = baseURL + url + "?" + qs.stringify(params);
+  const key = baseURL + url + '?' + qs.stringify(params)
   return new Promise((resolve) => {
     const instance = axios.create({
       baseURL: baseURL + url,
       headers: {
         ...headers,
-        token: "",
+        token: ''
       },
-      timeout: 30 * 1000,
-    });
+      timeout: 30 * 1000
+    })
 
     instance.interceptors.request.use(
       (config) => {
@@ -37,52 +37,52 @@ export const request = (
           config.cancelToken = new axios.CancelToken((cancelToken) => {
             // 判断是否存在请求中的当前请求 如果有取消当前请求
             if (existInPending(key)) {
-              cancelToken();
+              cancelToken()
             } else {
-              pushPending({ key, cancelToken });
+              pushPending({ key, cancelToken })
             }
-          });
+          })
         }
-        return config;
+        return config
       },
       (err) => {
-        return Promise.reject(err);
+        return Promise.reject(err)
       }
-    );
+    )
 
     instance.interceptors.response.use(
       (response) => {
         if (preventRepeat) {
-          removePending(key);
+          removePending(key)
         }
-        return response;
+        return response
       },
       (error) => {
-        return Promise.reject(error);
+        return Promise.reject(error)
       }
-    );
+    )
 
     // 请求执行前加入task
-    createTask(key, resolve);
+    createTask(key, resolve)
 
     instance(
       Object.assign(
         {},
         { method },
-        method === "post" || method === "put"
+        method === 'post' || method === 'put'
           ? { data: !uploadFile ? qs.stringify(params) : params }
           : { params }
       )
     )
       .then((response) => {
         // 处理task
-        handleTask(key, response);
+        handleTask(key, response)
       })
-      .catch(() => {});
-  });
-};
+      .catch(() => { })
+  })
+}
 // 定义对外Get、Post请求
 export default {
   // 单独导出 用于put等非常规请求及需要特殊处理header的请求
-  request,
-};
+  request
+}

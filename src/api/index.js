@@ -13,7 +13,7 @@ const HeadersMap = new Map([
 ])
 const commonParams = {}
 
-export function http(apiName, params, preventRepeat = true) {
+export function http (apiName, params, preventRepeat = true) {
   const [url, method, header] = apiUrls.get(apiName)
   return Request.request(
     method,

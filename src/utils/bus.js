@@ -1,5 +1,5 @@
 class Bus {
-  constructor(vue) {
+  constructor (vue) {
     if (!this.handles) {
       Object.defineProperty(this, 'handles', {
         value: {},
@@ -11,19 +11,19 @@ class Bus {
     this.eventMapUid = {}
   }
 
-  setEventMapUid(uid, eventName) {
+  setEventMapUid (uid, eventName) {
     if (!this.eventMapUid[uid]) this.eventMapUid[uid] = []
     this.eventMapUid[uid].push(eventName) // 把每个_uid订阅的事件名字push到各自uid所属的数组里
   }
 
-  $on(eventName, callback, vm) {
+  $on (eventName, callback, vm) {
     // vm是在组件内部使用时组件当前的this用于取_uid
     if (!this.handles[eventName]) this.handles[eventName] = []
     this.handles[eventName].push(callback)
     if (vm instanceof this.Vue) this.setEventMapUid(vm._uid, eventName)
   }
 
-  $emit() {
+  $emit () {
     const args = [...arguments]
     const eventName = args[0]
     const params = args.slice(1)
@@ -35,14 +35,14 @@ class Bus {
     }
   }
 
-  $offVmEvent(uid) {
+  $offVmEvent (uid) {
     const currentEvents = this.eventMapUid[uid] || []
     currentEvents.forEach((event) => {
       this.$off(event)
     })
   }
 
-  $off(eventName) {
+  $off (eventName) {
     delete this.handles[eventName]
   }
 }
@@ -52,7 +52,7 @@ const $bus = {}
 $bus.install = (Vue) => {
   Vue.prototype.$bus = new Bus(Vue)
   Vue.mixin({
-    beforeDestroy() {
+    beforeDestroy () {
       // 拦截beforeDestroy钩子自动销毁自身所有订阅的事件
       this.$bus.$offVmEvent(this._uid)
     }

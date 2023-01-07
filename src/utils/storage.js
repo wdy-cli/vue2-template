@@ -18,8 +18,8 @@ const SECRET_IV = CryptoJS.enc.Utf8.parse('e3bbe7e3ba84431a')
 const config = {
   type: 'sessionStorage', // 本地存储类型 localStorage sessionStorage
   prefix: 'xxx_0.0.1', // 名称前缀 建议：项目名 + 项目版本
-  expire: 0, //过期时间 单位：秒
-  isEncrypt: false, // 默认加密 为了调试方便, 开发过程中可以不加密
+  expire: 0, // 过期时间 单位：秒
+  isEncrypt: false // 默认加密 为了调试方便, 开发过程中可以不加密
 }
 
 // 判断是否支持 Storage
@@ -34,7 +34,7 @@ export const isSupStorage = () => {
     throw new Error('当前环境非无法使用sessionStorage')
   }
 
-  return typeof Storage !== 'undefined' ? true : false
+  return typeof Storage !== 'undefined'
 }
 
 // 设置 setStorage
@@ -45,11 +45,11 @@ export const setStorage = (key, value, expire = 0) => {
 
   if (isNaN(expire) || expire < 0) throw new Error('Expire must be a number')
 
-  expire = (expire ? expire : config.expire) * 1000
-  let data = {
+  expire = (expire || config.expire) * 1000
+  const data = {
     value: value, // 存储值
-    time: Date.now(), //存值时间戳
-    expire: expire, // 过期时间
+    time: Date.now(), // 存值时间戳
+    expire: expire // 过期时间
   }
   const encryptString = config.isEncrypt ? encrypt(JSON.stringify(data)) : JSON.stringify(data)
   window[config.type].setItem(autoAddPrefix(key), encryptString)
@@ -91,16 +91,16 @@ export const getStorage = key => {
 // 是否存在 hasStorage
 export const hasStorage = key => {
   key = autoAddPrefix(key)
-  let arr = getStorageAll().filter(item => {
+  const arr = getStorageAll().filter(item => {
     return item.key === key
   })
-  return arr.length ? true : false
+  return !!arr.length
 }
 
 // 获取所有key
 export const getStorageKeys = () => {
-  let items = getStorageAll()
-  let keys = []
+  const items = getStorageAll()
+  const keys = []
   for (let index = 0; index < items.length; index++) {
     keys.push(items[index].key)
   }
@@ -120,7 +120,7 @@ export const getStorageLength = () => {
 // 获取全部 getAllStorage
 export const getStorageAll = () => {
   const len = getStorageLength() // 获取长度
-  let arr = [] // 定义数据集
+  const arr = [] // 定义数据集
   for (let i = 0; i < len; i++) {
     const key = window[config.type].key(i)
     // 获取key 索引从0开始
@@ -200,7 +200,7 @@ const encrypt = data => {
   const encrypted = CryptoJS.AES.encrypt(dataHex, SECRET_KEY, {
     iv: SECRET_IV,
     mode: CryptoJS.mode.CBC,
-    padding: CryptoJS.pad.Pkcs7,
+    padding: CryptoJS.pad.Pkcs7
   })
   return encrypted.ciphertext.toString()
 }
@@ -216,14 +216,14 @@ const decrypt = data => {
   const decrypt = CryptoJS.AES.decrypt(str, SECRET_KEY, {
     iv: SECRET_IV,
     mode: CryptoJS.mode.CBC,
-    padding: CryptoJS.pad.Pkcs7,
+    padding: CryptoJS.pad.Pkcs7
   })
   const decryptedStr = decrypt.toString(CryptoJS.enc.Utf8)
   return decryptedStr.toString()
 }
 
 export default {
-  install(Vue) {
+  install (Vue) {
     // 挂载全局
     if (!Vue.$storage) {
       Vue.$storage = {
@@ -235,7 +235,7 @@ export default {
         isJson: isJson,
         has: hasStorage,
         del: removeStorage,
-        clear: clearStorage,
+        clear: clearStorage
       }
     } else {
       Vue.$storage.set = setStorage
@@ -251,7 +251,7 @@ export default {
     Vue.mixin({
       created: function () {
         this.$storage = Vue.$storage
-      },
+      }
     })
-  },
+  }
 }
