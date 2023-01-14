@@ -9,15 +9,15 @@ export default {
   name: 'App',
   methods: {
 
-    apiAddressArea () {
-      this.$api.apiAddressArea().then(res => {
-        if (res.isError) return
-        this.$store.commit('app/COMMIT_REGION', res.data)
-      })
-    }
+    // apiAddressArea () {
+    //   this.$api.apiAddressArea().then(res => {
+    //     if (res.isError) return
+    //     this.$store.commit('app/COMMIT_REGION', res.data)
+    //   })
+    // }
   },
   created () {
-    this.apiAddressArea()
+    // this.apiAddressArea()
   }
 }
 </script>
