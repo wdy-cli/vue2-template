@@ -1,11 +1,5 @@
 const { defineConfig } = require('@vue/cli-service')
 
-const path = require('path')
-
-function resolve(dir) {
-  return path.join(__dirname, dir)
-}
-
 const proxyHost = 'http://110.42.171.148:8080'
 const port = '9527'
 

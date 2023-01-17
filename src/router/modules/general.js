@@ -3,6 +3,14 @@ export default [
   {
     path: '/',
     redirect: '/home'
+  },
+  {
+    component: () => import('@/pages/Example.vue'),
+    path: '/example',
+    name: 'Example',
+    meta: {
+      title: '示例'
+    }
   }
   // {
   //   path: '/home',

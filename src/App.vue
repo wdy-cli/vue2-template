@@ -23,6 +23,7 @@ export default {
 </script>
 
 <style lang="scss">
+
 #app {
   min-width: 1200px;
   font-size: 14px;

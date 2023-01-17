@@ -2,12 +2,13 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+
 import '@/utils/index'
 import '@/router/filter.js'
 import '@/api'
 import '@/plugins'
-
 import 'flex.css'
+import './assets/css/element-variables.scss'
 
 Vue.config.productionTip = false
 

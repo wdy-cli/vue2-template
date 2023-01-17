@@ -37,7 +37,8 @@ module.exports = {
           'renderError'
         ]
       }
-    ]
+    ],
+    'vue/multi-word-component-names': 'off'
   },
   overrides: [
     {
